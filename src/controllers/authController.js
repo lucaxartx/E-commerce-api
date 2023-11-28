@@ -29,13 +29,11 @@ const register = async () => {
   const role = isFirstAccount ? "admin" : "user";
 
   const user = await User.create(name, password, email, role);
-
+  //attach cookie to response
   res.status(StatusCodes.CREATED).json({ user });
 };
 
-const login = async () => {
-  res.send("register");
-};
+const login = async () => {};
 const logout = async () => {
   res.send("register");
 };
