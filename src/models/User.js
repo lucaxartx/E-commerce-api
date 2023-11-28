@@ -17,5 +17,13 @@ const userSchema = mongoose.Schema({
     type: String,
     required: [true, "please provide password  "],
   },
+  role: {
+    type: String,
+    enum: ["admin", "user"],
+    required: [true, "please provide role"],
+  },
 });
+
+//hash password
+
 module.exports = mongoose.model("User", userSchema);
