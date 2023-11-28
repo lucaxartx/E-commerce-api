@@ -7,7 +7,9 @@ const app = express();
 const morgan = require("morgan");
 const connectDb = require("./src/db/connect");
 
+//middlewares
 app.use(morgan("tiny"));
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("my homepage");
