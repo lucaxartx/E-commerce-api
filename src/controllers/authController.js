@@ -4,7 +4,7 @@ const customError = require("../errors");
 const { StatusCodes } = require("http-status-codes");
 const { attachCookieToResponse, createTokenUser } = require("../utils");
 
-const register = async () => {
+const register = async (req, res) => {
   const { name, password, email } = req.body;
   const mailAlreadyExists = User.findOne(email);
   if (mailAlreadyExists) {
@@ -36,9 +36,27 @@ const register = async () => {
   res.status(StatusCodes.CREATED).json({ user: tokenUser });
 };
 
-const login = async () => {};
-const logout = async () => {
-  res.send("register");
+const login = async (req, res) => {
+  const { password, email } = req.body;
+  if (!email || !password) {
+    throw new customError.badRequestError("please provide email and password ");
+  }
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new customError.notFoundError("user not found");
+  }
+  const tokenUser = createTokenUser(user);
+  attachCookieToResponse({ res, user: tokenUser });
+  res.status(StatusCodes.OK).json({ user: tokenUser });
+};
+
+const logout = async (req, res) => {
+  res.cookie("token", "logout", {
+    httpOnly: true,
+    expires: new Date(Date.now + 1000),
+  });
+  res.status(StatusCodes.OK).json({ msg: "user logged out successfully " });
 };
 
 module.exports = { register, login, logout };
