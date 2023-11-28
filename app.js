@@ -7,6 +7,7 @@ const app = express();
 const morgan = require("morgan");
 const connectDb = require("./src/db/connect");
 const notFoundMiddleware = require("./src/middlewares/notFound");
+const errorhandlerMiddleware = require("./src/middlewares/errorHandler");
 
 //middlewares
 app.use(morgan("tiny"));
@@ -17,6 +18,7 @@ app.get("/", (req, res) => {
 });
 
 app.use(notFoundMiddleware);
+app.use(errorhandlerMiddleware);
 
 const port = process.env.PORT || 3000;
 
