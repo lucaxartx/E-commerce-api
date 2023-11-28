@@ -8,10 +8,14 @@ const morgan = require("morgan");
 const connectDb = require("./src/db/connect");
 const notFoundMiddleware = require("./src/middlewares/notFound");
 const errorhandlerMiddleware = require("./src/middlewares/errorHandler");
+const authRoute = require("./src/routes/authRoutes");
 
 //middlewares
 app.use(morgan("tiny"));
 app.use(express.json());
+
+//routes
+app.use("/api/v1/auth", authRoute);
 
 app.get("/", (req, res) => {
   res.send("my homepage");
