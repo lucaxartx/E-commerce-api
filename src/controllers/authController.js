@@ -6,7 +6,7 @@ const { attachCookieToResponse, createTokenUser } = require("../utils");
 
 const register = async (req, res) => {
   const { name, password, email } = req.body;
-  const mailAlreadyExists = User.findOne(email);
+  const mailAlreadyExists = await User.findOne({ email });
   if (mailAlreadyExists) {
     throw new customError.badRequestError("email already in use ");
   }
@@ -29,7 +29,9 @@ const register = async (req, res) => {
   const isFirstAccount = (await User.countDocuments({})) == 0;
   const role = isFirstAccount ? "admin" : "user";
 
-  const user = await User.create(name, password, email, role);
+  User.watch().on("change", (data) => console.log(data));
+
+  const user = await User.create({ name, password, email, role });
   //attach cookie to response
   const tokenUser = createTokenUser(user);
   attachCookieToResponse({ res, user: tokenUser });

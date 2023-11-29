@@ -30,7 +30,7 @@ const port = process.env.PORT || 3000;
 
 const start = async function () {
   try {
-    // await connectDb(process.env.MONGO_URL);
+    await connectDb(process.env.MONGO_URL);
     app.listen(port, () => {
       console.log(`server is live on port:${port}`);
     });

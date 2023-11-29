@@ -6,7 +6,7 @@ const errorhandler = (err, req, res, next) => {
     statuscode: err.statuscode || StatusCodes.INTERNAL_SERVER_ERROR,
   };
 
-  if ((err.name = "ValidatiionError")) {
+  if (err.name == "ValidatiionError") {
     customError.msg = Object.values(err.errors)
       .map((item) => item.message)
       .join(",");
@@ -23,8 +23,9 @@ const errorhandler = (err, req, res, next) => {
     customError.msg = `No item found with id : ${err.value}`;
     customError.statusCode = StatusCodes.NOT_FOUND;
   }
+  console.log(err);
 
-  return res.status(customError.statusCode).json({ msg: customError.msg });
+  return res.status(customError.statuscode).json({ msg: customError.msg });
 };
 
 module.exports = errorhandler;
