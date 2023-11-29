@@ -3,6 +3,7 @@ const User = require("../models/User");
 const customError = require("../errors");
 const { StatusCodes } = require("http-status-codes");
 const { attachCookieToResponse, createTokenUser } = require("../utils");
+const { compare } = require("bcryptjs");
 
 const register = async (req, res) => {
   const { name, password, email } = req.body;
@@ -48,6 +49,12 @@ const login = async (req, res) => {
   if (!user) {
     throw new customError.notFoundError("user not found");
   }
+
+  const isPasswordCorrect = await User.comparepassword(password);
+  if (!isPasswordCorrect) {
+    throw new customError.unauthenticatedError("Invalid Credentials");
+  }
+
   const tokenUser = createTokenUser(user);
   attachCookieToResponse({ res, user: tokenUser });
   res.status(StatusCodes.OK).json({ user: tokenUser });
