@@ -10,6 +10,7 @@ const connectDb = require("./src/db/connect");
 const notFoundMiddleware = require("./src/middlewares/notFound");
 const errorhandlerMiddleware = require("./src/middlewares/errorHandler");
 const authRoute = require("./src/routes/authRoutes");
+const userRoute = require("./src/routes/userRoute");
 
 //middlewares
 app.use(morgan("tiny"));
@@ -18,6 +19,7 @@ app.use(cookieParser(process.env.JWT_SECRET)); //signed cookies
 
 //routes
 app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/users", userRoute);
 
 app.get("/", (req, res) => {
   res.send("my homepage");
