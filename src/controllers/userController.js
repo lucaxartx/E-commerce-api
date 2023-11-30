@@ -22,8 +22,24 @@ const showCurrentUser = async (req, res) => {
 const updateUser = (req, res) => {
   res.send("get all users");
 };
-const updateUserPassword = (req, res) => {
-  res.send("get all users");
+const updateUserPassword = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  if (!oldPassword || !newPassword) {
+    throw new customErr.badRequestError(
+      "please provide oldpassword and newpassword "
+    );
+  }
+
+  const user = await User.findOne({ _id: req.user.userId });
+
+  //was ispasswordCorrrect same as login controller i prefer comfirmpassword
+  const comfirmPassword = await user.comparePassword(oldPassword); //if oldpassword matches saved password(this.password/user.password)
+  if (!comfirmPassword) {
+    throw new customErr.unauthenticatedError("invalid credentials ");
+  }
+  user.password = newPassword;
+  await user.save();
+  res.status(StatusCodes.OK).json({ msg: "password updated successfully " });
 };
 
 module.exports = {

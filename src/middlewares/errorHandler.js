@@ -23,7 +23,7 @@ const errorhandler = (err, req, res, next) => {
     customError.msg = `No item found with id : ${err.value}`;
     customError.statusCode = StatusCodes.NOT_FOUND;
   }
-  console.log(err);
+  console.log("this the error:", err);
 
   return res.status(customError.statuscode).json({ msg: customError.msg });
 };

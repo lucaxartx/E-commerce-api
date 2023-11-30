@@ -50,9 +50,13 @@ const login = async (req, res) => {
     throw new customError.notFoundError("user not found");
   }
 
-  const isPasswordCorrect = await User.comparepassword(password);
+  const isPasswordCorrect = await user.comparePassword(password);
+  // console.log(password);
+  // console.log(isPasswordCorrect);
   if (!isPasswordCorrect) {
-    throw new customError.unauthenticatedError("Invalid Credentials");
+    throw new customError.unauthenticatedError(
+      "please provide correct password "
+    );
   }
 
   const tokenUser = createTokenUser(user);
@@ -63,7 +67,7 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
   res.cookie("token", "logout", {
     httpOnly: true,
-    expires: new Date(Date.now + 1000),
+    expires: new Date(Date.now() + 1000),
   });
   res.status(StatusCodes.OK).json({ msg: "user logged out successfully " });
 };
