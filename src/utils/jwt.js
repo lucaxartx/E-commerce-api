@@ -1,4 +1,5 @@
 //please install jsonwebtoken
+//idea:we will need to handle error if token is invalid or expired
 
 const jwt = require("jsonwebtoken");
 
@@ -9,10 +10,7 @@ const createJWT = ({ payload }) => {
   return token; //why do we return
 };
 
-const verifyToken = (token) => {
-  jwt.verify(token, process.env.JWT_SECRET);
-};
-
+const verifyToken = ({ token }) => jwt.verify(token, process.env.JWT_SECRET);
 const attachCookieToResponse = ({ res, user }) => {
   const token = createJWT({ payload: user });
   const oneDay = 1000 * 60 * 60 * 24; //oneday
