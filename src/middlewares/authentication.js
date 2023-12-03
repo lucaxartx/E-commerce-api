@@ -11,8 +11,8 @@ const authenticateUser = async (req, res, next) => {
 
   try {
     const { name, userId, role } = verifyToken({ token });
-    console.log("name of user:", { name });
-    console.log(verifyToken({ token }));
+    // console.log("name of user:", { name });
+    // console.log(verifyToken({ token }));
     // const payload = verifyToken({ token });
     // req.user = {
     //   name: payload.name,
