@@ -6,6 +6,7 @@ const app = express();
 
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const fileUpload = require("express-fileupload");
 const connectDb = require("./src/db/connect");
 const notFoundMiddleware = require("./src/middlewares/notFound");
 const errorhandlerMiddleware = require("./src/middlewares/errorHandler");
@@ -17,6 +18,7 @@ const productRoute = require("./src/routes/productRoutes");
 app.use(morgan("tiny"));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET)); //signed cookies
+app.use(fileUpload());
 
 app.get("/", (req, res) => {
   console.log("heres your token:", req.signedCookies);
