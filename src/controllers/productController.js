@@ -60,7 +60,7 @@ const uploadImage = async (req, res) => {
   }
   const imagePath = path.join(
     __dirname,
-    "../public/uploadds" + `${productImage.name}`
+    "../public/uploads" + `${productImage.name}`
   );
 
   await productImage.mv(imagePath);
