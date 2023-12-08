@@ -32,7 +32,7 @@ const showCurrentUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const { name, email } = req.body;
   if (!name || !email) {
-    throw new customErr.notFoundError("please provide email and password ");
+    throw new customErr.notFoundError("please provide email and name ");
   }
   const user = await User.findOneAndUpdate(
     { _id: req.user.userId },
