@@ -5,7 +5,7 @@ const path = require("path");
 
 const createProduct = async (req, res) => {
   req.body.user = req.user.userId;
-  const product = await Product.create({ ...req.body });
+  const product = await Product.create(req.body);
   res.status(StatusCodes.CREATED).json({ product });
 };
 const getAllProducts = async (req, res) => {
@@ -13,7 +13,8 @@ const getAllProducts = async (req, res) => {
   res.status(StatusCodes.OK).json({ products, productamount: products.length });
 };
 const getSingleProduct = async (req, res) => {
-  const product = await Product.findOne({ _id: req.params.productId });
+  const { id: productId } = req.params;
+  const product = await Product.findOne({ _id: productId });
   if (!product) {
     throw new customErr.notFoundError(
       `no product with id:${req.params.productId}`
