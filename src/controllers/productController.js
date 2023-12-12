@@ -23,10 +23,9 @@ const getSingleProduct = async (req, res) => {
   res.status(StatusCodes.OK).json({ product });
 };
 const updateProduct = async (req, res) => {
-  const product = await Product.findOneAndUpdate(
-    { _id: req.params.productId },
-    req.body
-  );
+  const { id: productId } = req.params;
+  // const { name, description, price, image } = req.body;
+  const product = await Product.findOneAndUpdate({ _id: productId }, req.body);
   if (!product) {
     throw new customErr.notFoundError(
       `no product with id:${req.params.productId}`
@@ -36,13 +35,13 @@ const updateProduct = async (req, res) => {
   res.status(StatusCodes.OK).json({ product });
 };
 const deleteProduct = async (req, res) => {
-  const product = await Product.findOne({ _id: req.params.productId });
+  const { id: productId } = req.params;
+  const product = await Product.findOne({ _id: productId });
   if (!product) {
-    throw new customErr.notFoundError(
-      `no product with id:${req.params.productId}`
-    );
+    throw new customErr.notFoundError(`no product with id:${productId}`);
   }
-  await product.remove();
+  //use deleteOne instead of product.remove() since its not available on mongoose8.0.1
+  await product.deleteOne();
   res.status(StatusCodes.OK).json({ msg: "product deleted successfully " });
 };
 const uploadImage = async (req, res) => {
